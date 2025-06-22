@@ -10,6 +10,9 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
+# Fastfile
+require_relative './fastlane/patches/spaceship_bundle_id_capability_patch'
+
 default_platform(:ios)
 
 TEAMID = ENV["TEAMID"]
