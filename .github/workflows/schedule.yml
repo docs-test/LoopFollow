@@ -1,0 +1,39 @@
+name: Run on Second Saturday
+
+on:
+  schedule:
+    # This cron expression schedules the workflow to run every Saturday at 00:00 UTC.
+    # The actual execution on the second Saturday is determined by the conditional step.
+    - cron: '0 0 * * 6' # Minute, Hour, Day of Month, Month, Day of Week (6 = Saturday)
+  workflow_dispatch: # Allows manual triggering for testing
+
+jobs:
+  second_saturday_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if it's the second Saturday
+        id: check_saturday
+        run: |
+          # Calculate the week number for the current day of the month
+          # (date +%-d) gets the day of the month without leading zeros
+          # -1 to make it 0-indexed for division
+          # /7 to get the week number (0 for 1st-7th, 1 for 8th-14th, etc.)
+          # +1 to make it 1-indexed
+          current_week_of_month=$((($(date +%-d)-1)/7+1))
+          
+          # Check if the current week number is 2 (representing the second week)
+          if [[ "$current_week_of_month" -eq 2 ]]; then
+            echo "It is the second Saturday of the month. Proceeding with the job."
+            echo "IS_SECOND_SATURDAY=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "It is not the second Saturday of the month. Skipping this job."
+            echo "IS_SECOND_SATURDAY=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Your Second Saturday Task
+        if: steps.check_saturday.outputs.IS_SECOND_SATURDAY == 'true'
+        run: |
+          echo "This task runs only on the second Saturday of the month."
+          # Add your desired commands here
+          ls -la
+          echo "Second Saturday task completed."
