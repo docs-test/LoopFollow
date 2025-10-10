@@ -5,7 +5,7 @@ on:
   schedule:
     # Check for updates every Sunday
     #   Later logic builds if there are updates or if it is the 2nd Sunday of the month
-    - cron: "05 19 * * 5" # Friday at UTC 19:05 for trigger test
+    - cron: "55 19 * * 5" # Friday at UTC 19:55 for trigger test
 
 env:  
   UPSTREAM_REPO: loopandlearn/LoopFollow
