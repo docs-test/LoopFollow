@@ -5,7 +5,7 @@ on:
   schedule:
     # Check for updates every Sunday
     #   Later logic builds if there are updates or if it is the 2nd Sunday of the month
-    - cron: "55 19 * * 5" # Friday at UTC 19:55 for trigger test
+    - cron: "17 10 * * 0" # Sunday at UTC 10:17
 
 env:  
   UPSTREAM_REPO: loopandlearn/LoopFollow
@@ -111,26 +111,6 @@ jobs:
             /repos/${{ github.repository_owner }}/LoopFollow/git/refs \
             -f ref='refs/heads/alive-dev' \
             -f sha=$SHA_DEV
-
-  # Checks if this is the second instance of this day-of-week in this month
-  check_day_in_month:
-    runs-on: ubuntu-latest
-    name: Check day in month
-    outputs:
-      IS_SECOND_IN_MONTH: ${{ steps.date-check.outputs.is_second_instance }}
-
-    steps:
-      - id: date-check
-        name: Check if this is the second time this day-of-week happens this month
-        run: |
-          DAY_OF_MONTH=$(date +%-d)
-          WEEK_OF_MONTH=$(( ($(date +%-d) - 1) / 7 + 1 ))
-          if [[ $WEEK_OF_MONTH -eq 2 ]]; then
-            echo "is_second_instance=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "is_second_instance=false" >> "$GITHUB_OUTPUT"
-          fi
-
 
   # Checks for changes in upstream repository; if changes exist prompts sync for build
   # Performs keepalive to avoid stale fork
