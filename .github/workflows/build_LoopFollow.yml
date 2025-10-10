@@ -9,7 +9,7 @@ on:
   schedule:
     # Check for updates every Sunday
     #   Later logic builds if there are updates or if it is the 2nd Sunday of the month
-    - cron: "45 17 * * 5" # Friday at UTC 17:45 for trigger test (changed check_day_in_month to 3rd, not 2nd)
+    - cron: "15 18 * * 5" # Friday at UTC 18:15 for trigger test
 
 env:  
   UPSTREAM_REPO: loopandlearn/LoopFollow
@@ -109,7 +109,7 @@ jobs:
         run: |
           DAY_OF_MONTH=$(date +%-d)
           WEEK_OF_MONTH=$(( ($(date +%-d) - 1) / 7 + 1 ))
-          if [[ $WEEK_OF_MONTH -eq 3 ]]; then
+          if [[ $WEEK_OF_MONTH -eq 2 ]]; then
             echo "is_second_instance=true" >> "$GITHUB_OUTPUT"
           else
             echo "is_second_instance=false" >> "$GITHUB_OUTPUT"
