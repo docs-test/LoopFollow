@@ -5,8 +5,8 @@ on:
   schedule:
     # Check for updates every Sunday
     #   Later logic builds if there are updates or if it is the 2nd Sunday of the month
-    - cron: "17 10 * * 0" # Sunday at UTC 10:17
-
+    #- cron: "17 10 * * 0" # Sunday at UTC 10:17
+    - cron: "30 19 * * 1" # modify to test scheduled builds
 env:  
   UPSTREAM_REPO: loopandlearn/LoopFollow
   UPSTREAM_BRANCH: ${{ github.ref_name }} # branch on upstream repository to sync from (replace with specific branch name if needed)
