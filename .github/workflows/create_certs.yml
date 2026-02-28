@@ -59,7 +59,6 @@ jobs:
         id: set_output
         run: |
           CERT_STATUS_FILE="${{ github.workspace }}/fastlane/new_certificate_needed.txt"
-          ENABLE_NUKE_CERTS=${{ vars.ENABLE_NUKE_CERTS }}
 
           if [ -f "$CERT_STATUS_FILE" ]; then
             CERT_STATUS=$(cat "$CERT_STATUS_FILE" | tr -d '\n' | tr -d '\r') # Read file content and strip newlines
@@ -71,12 +70,12 @@ jobs:
           fi
 
           # Check if ENABLE_NUKE_CERTS is not set to true when certs are valid
-          if [ "$CERT_STATUS" != "true" ] && [ "$ENABLE_NUKE_CERTS" != "true" ]; then
+          if [ "$CERT_STATUS" != "true" ] && [ vars.ENABLE_NUKE_CERTS != "true" ]; then
             echo "::notice::🔔 Automated renewal of certificates is disabled because the repository variable ENABLE_NUKE_CERTS is not set to 'true'."
           fi
 
           # Check if ENABLE_NUKE_CERTS is not set to true when certs are not valid
-          if [ "$CERT_STATUS" = "true" ] && [ "$ENABLE_NUKE_CERTS" != "true" ]; then
+          if [ "$CERT_STATUS" = "true" ] && [ vars.ENABLE_NUKE_CERTS != "true" ]; then
             echo "::error::❌ No valid distribution certificate found. Automated renewal of certificates was skipped because the repository variable ENABLE_NUKE_CERTS is not set to 'true'."
             exit 1
           fi
