@@ -12,7 +12,7 @@ env:
   UPSTREAM_REPO: loopandlearn/LoopFollow
   UPSTREAM_BRANCH: ${{ github.ref_name }} # branch on upstream repository to sync from (replace with specific branch name if needed)
   TARGET_BRANCH: ${{ github.ref_name }} # target branch on fork to be kept in sync
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  F
 
 jobs:
   # use a single runner for these sequential steps
@@ -101,6 +101,7 @@ jobs:
           steps.workflow-permission.outputs.has_permission == 'true' &&
           vars.SCHEDULED_SYNC != 'false' && github.repository_owner != 'loopandlearn'
         id: sync
+        environment: FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true
         uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
         with:
           target_sync_branch: ${{ env.TARGET_BRANCH }}
