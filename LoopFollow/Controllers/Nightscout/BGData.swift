@@ -33,11 +33,17 @@ extension MainViewController {
                 return
             }
 
-            // Dexcom only returns 24 hrs of data. If we need more, call NS.
-            if graphHours > 24, IsNightscoutEnabled() {
-                self.webLoadNSBGData(dexData: data)
+            // Dexcom Share can return duplicate readings when multiple uploaders
+            // write to the same Dexcom account. Dedup before any further use.
+            let dedupedData = self.deduplicateBGReadings(data)
+
+            // Supplement with NS if Dex data doesn't cover the full requested window.
+            let dexCutoff = dateTimeUtils.getNowTimeIntervalUTC() - Double(graphHours) * 3600
+            let dexCoversFull = dedupedData.last.map { $0.date <= dexCutoff } ?? false
+            if !dexCoversFull, IsNightscoutEnabled() {
+                self.webLoadNSBGData(dexData: dedupedData)
             } else {
-                self.ProcessDexBGData(data: self.deduplicateBGReadings(data), sourceName: "Dexcom")
+                self.ProcessDexBGData(data: dedupedData, sourceName: "Dexcom")
             }
         }
     }
@@ -52,7 +58,7 @@ extension MainViewController {
 
         var parameters: [String: String] = [:]
         let date = Calendar.current.date(byAdding: .day, value: -1 * Storage.shared.downloadDays.value, to: Date())!
-        parameters["count"] = "\(Storage.shared.downloadDays.value * 2 * 24 * 60 / 5)"
+        parameters["count"] = "\(Storage.shared.downloadDays.value * globalVariables.maxExpectedUploaders * 24 * 60 / 5)"
         parameters["find[date][$gte]"] = "\(Int(date.timeIntervalSince1970 * 1000))"
 
         // Exclude 'cal' entries
