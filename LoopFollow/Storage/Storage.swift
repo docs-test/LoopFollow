@@ -39,7 +39,7 @@ class Storage {
 
     var selectedBLEDevice = StorageValue<BLEDevice?>(key: "selectedBLEDevice", defaultValue: nil)
 
-    var debugLogLevel = StorageValue<Bool>(key: "debugLogLevel", defaultValue: false)
+    var debugLogLevel = StorageValue<Bool>(key: "debugLogLevel", defaultValue: true)
 
     var contactTrend = StorageValue<ContactIncludeOption>(key: "contactTrend", defaultValue: .off)
     var contactDelta = StorageValue<ContactIncludeOption>(key: "contactDelta", defaultValue: .off)
@@ -214,7 +214,7 @@ class Storage {
     // When adding a new migration step in `runMigrationsIfNeeded()`, bump this default
     // to the new latest step number so fresh installs skip all migrations. Other defaults
     // in this file must reflect the post-migration final state for a fresh install.
-    var migrationStep = StorageValue<Int>(key: "migrationStep", defaultValue: 7)
+    var migrationStep = StorageValue<Int>(key: "migrationStep", defaultValue: 9)
 
     var persistentNotification = StorageValue<Bool>(key: "persistentNotification", defaultValue: false)
     var persistentNotificationLastBGTime = StorageValue<Date>(key: "persistentNotificationLastBGTime", defaultValue: .distantPast)
