@@ -209,6 +209,7 @@ class Storage {
     var device = StorageValue<String>(key: "device", defaultValue: "")
     var nsWriteAuth = StorageValue<Bool>(key: "nsWriteAuth", defaultValue: false)
     var nsAdminAuth = StorageValue<Bool>(key: "nsAdminAuth", defaultValue: false)
+    var webSocketEnabled = StorageValue<Bool>(key: "webSocketEnabled", defaultValue: true)
 
     // When adding a new migration step in `runMigrationsIfNeeded()`, bump this default
     // to the new latest step number so fresh installs skip all migrations. Other defaults
