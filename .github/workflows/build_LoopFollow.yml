@@ -6,7 +6,7 @@ on:
     # Check for updates every Sunday
     #   Later logic builds if there are updates or if it is the 2nd Sunday of the month
     #- cron: "17 10 * * 0" # Sunday at UTC 10:17
-    - cron: "50 22 * * 5" # Friday at UTC 23:50 for testing
+    - cron: "50 01 * * 6" # Saturday at UTC 01:50 for testing
 
 env:  
   GH_PAT: ${{ secrets.GH_PAT }}
@@ -143,7 +143,7 @@ jobs:
         run: |
           DAY_OF_MONTH=$(date +%-d)
           WEEK_OF_MONTH=$(( ($(date +%-d) - 1) / 7 + 1 ))
-          if [[ $WEEK_OF_MONTH -eq 3 ]]; then
+          if [[ $WEEK_OF_MONTH -eq 2 ]]; then
             echo "is_second_instance=true" >> "$GITHUB_OUTPUT"
           else
             echo "is_second_instance=false" >> "$GITHUB_OUTPUT"
